@@ -14,8 +14,8 @@ def create_app():
     #initialisation de la BD
     db.init_app(app)
 
-    #importer les routes
-    from app.routes import main
-    app.register_blueprint(main)
+    #importer les Blueprint
+    from app.routes.user_routes import user_routes
+    app.register_blueprint(user_routes,url_prefix='api/users')
 
     return app
