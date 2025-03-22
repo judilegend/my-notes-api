@@ -36,7 +36,8 @@ def login_user(data):
     # Vérifie le mot de passe
     if not check_password_hash(user.password, data['password']):
         return jsonify({"error": "Nom d’utilisateur ou mot de passe incorrect"}), 401
-    # Génère un token JWT
-    token = jwt.encode({'user_id': user.id, 'role': user.role}, '', algorithm='HS256')
-    return jsonify({'token': token.decode('utf-8')}), 200
+   # Génère un token JWT avec le SECRET_KEY
+    token = jwt.encode({'user_id': user.id, 'role': user.role.name}, SECRET_KEY, algorithm='HS256')
+    
+    return jsonify({'token': token}), 200
     # return jsonify({"message": "Connexion réussie"}), 200
