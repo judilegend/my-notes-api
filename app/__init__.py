@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 from dotenv import load_dotenv
 import os
+import secrets
 
 db = SQLAlchemy()
 
@@ -15,6 +16,8 @@ def create_app():
     #configuration de la base de donnees
     app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/gestion_notes'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    # Définir une clé secrète pour l'application
+    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', secrets.token_hex(16))
 
     #initialisation de la BD
     db.init_app(app)
