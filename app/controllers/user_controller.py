@@ -31,19 +31,25 @@ def token_required(f):
 
 # Enregistrement d'un nouvel utilisateur
 def register_user(data):
-    if not all(key in data for key in ['username', 'password', 'role']):
+    if not all(key in data for key in ['name', 'lastname', 'email', 'password', 'im', 'role']):
         return jsonify({'message': 'Données manquantes'}), 400
 
     if data['role'] not in UserRole.__members__:
         return jsonify({'message': 'Role invalide'}), 400
 
-    if User.query.filter_by(username=data['username']).first():
-        return jsonify({"error": "Nom d'utilisateur déjà pris"}), 400
+    if User.query.filter_by(email=data['email']).first():
+        return jsonify({"error": "Email déjà utilisé"}), 400
+        
+    if User.query.filter_by(im=data['im']).first():
+        return jsonify({"error": "Numéro matricule déjà utilisé"}), 400
 
     # Hachage du mot de passe
     hashed_password = generate_password_hash(data['password'], method='pbkdf2:sha256')
     new_user = User(
-        username=data['username'],
+        name=data['name'],
+        lastname=data['lastname'],
+        email=data['email'],
+        im=data['im'],
         password=hashed_password,
         role=UserRole[data['role']]
     )
@@ -59,32 +65,33 @@ def register_user(data):
         "message": "Utilisateur enregistré avec succès",
         "user": {
             "id": new_user.id,
-            "username": new_user.username,
+            "name": new_user.name,
+            "lastname": new_user.lastname,
+            "email": new_user.email,
             "role": new_user.role.value
-        }
+        },
+        "token": generate_token(new_user)
     }), 201
 
 # Connexion d'un utilisateur
 def login_user(data):
-    if not all(key in data for key in ['username', 'password']):
+    if not all(key in data for key in ['email', 'password']):
         return jsonify({'message': 'Données manquantes'}), 400
 
-    user = User.query.filter_by(username=data['username']).first()
+    user = User.query.filter_by(email=data['email']).first()
     if not user:
         return jsonify({"error": "Utilisateur non trouvé"}), 404
 
     if check_password_hash(user.password, data['password']):
-        token = jwt.encode({
-            'user_id': user.id,
-            'role': user.role.value,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)
-        }, current_app.config['SECRET_KEY'], algorithm='HS256')
+        token = generate_token(user)
         
         return jsonify({
             "message": "Connexion réussie",
             "user": {
                 "id": user.id,
-                "username": user.username,
+                "name": user.name,
+                "lastname": user.lastname,
+                "email": user.email,
                 "role": user.role.value
             },
             "token": token
@@ -92,11 +99,21 @@ def login_user(data):
     
     return jsonify({"error": "Mot de passe incorrect"}), 401
 
+# Fonction utilitaire pour générer un token
+def generate_token(user):
+    return jwt.encode({
+        'user_id': user.id,
+        'role': user.role.value,
+        'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)
+    }, current_app.config['SECRET_KEY'], algorithm='HS256')
+
 # Profil de l'utilisateur protégé par le token
 @token_required
 def get_user_profile(current_user):
     return jsonify({
         "id": current_user.id,
-        "username": current_user.username,
+        "name": current_user.name,
+        "lastname": current_user.lastname,
+        "email": current_user.email,
         "role": current_user.role.value
     }), 200
