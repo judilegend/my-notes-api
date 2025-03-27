@@ -14,3 +14,10 @@ class User(db.Model):
     im = db.Column(db.String(10), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
     role = db.Column(db.Enum(UserRole), nullable=False)
+
+
+    # Nouvelles relations
+    classe_id = db.Column(db.Integer, db.ForeignKey('classe.id'), nullable=True)
+    modules_enseignes = db.relationship('Module', backref='enseignant', lazy=True)
+    notes = db.relationship('Note', backref='etudiant', lazy=True)
+    reclamations = db.relationship('Reclamation', backref='etudiant', lazy=True)
