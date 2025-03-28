@@ -52,7 +52,7 @@ def register_user(data):
         im=data['im'],
         password=hashed_password,
         role=UserRole[data['role']],
-        classe_id= data['classe_id']
+        # classe_id= data['classe_id']
     )
     
     try:
