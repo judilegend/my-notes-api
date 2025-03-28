@@ -18,3 +18,8 @@ def register():
 def login():
     data = request.get_json()
     return login_user(data)
+
+# Route pour obtenir le profil de l'utilisateur connecté
+@user_routes.route('/profile', methods=['GET'])
+def profile():
+    return get_user_profile()
