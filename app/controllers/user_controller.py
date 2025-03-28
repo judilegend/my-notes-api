@@ -51,7 +51,8 @@ def register_user(data):
         email=data['email'],
         im=data['im'],
         password=hashed_password,
-        role=UserRole[data['role']]
+        role=UserRole[data['role']],
+        classe_id= data['classe_id']
     )
     
     try:
@@ -69,6 +70,7 @@ def register_user(data):
             "lastname": new_user.lastname,
             "email": new_user.email,
             "role": new_user.role.value
+            
         },
         "token": generate_token(new_user)
     }), 201
