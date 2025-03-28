@@ -52,7 +52,8 @@ with app.app_context():
     
     # Créer une classe par défaut
     classe = Classe(
-        nom="Informatique",
+        mention="Informatique",
+        parcours="GB",
         niveau="Licence 3"
     )
     

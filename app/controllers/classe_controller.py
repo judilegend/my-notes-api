@@ -10,11 +10,12 @@ def create_classe(current_user, data):
     if current_user.role != UserRole.ADMIN:
         return jsonify({'message': 'Accès non autorisé'}), 403
     
-    if not all(key in data for key in ['nom', 'niveau']):
+    if not all(key in data for key in ['mention','parcours', 'niveau']):
         return jsonify({'message': 'Données manquantes'}), 400
     
     new_classe = Classe(
-        nom=data['nom'],
+        mention=data['mention'],
+        parcours=data['parcours'],
         niveau=data['niveau']
     )
     
@@ -25,7 +26,8 @@ def create_classe(current_user, data):
             'message': 'Classe créée avec succès',
             'classe': {
                 'id': new_classe.id,
-                'nom': new_classe.nom,
+                'mention': new_classe.mention,
+                'parcours': new_classe.parcours,
                 'niveau': new_classe.niveau
             }
         }), 201
@@ -42,7 +44,8 @@ def get_all_classes(current_user):
     for classe in classes:
         result.append({
             'id': classe.id,
-            'nom': classe.nom,
+            'mention': classe.mention,
+            'parcours': classe.parcours,
             'niveau': classe.niveau
         })
     
@@ -55,7 +58,8 @@ def get_classe(current_user, classe_id):
     
     return jsonify({
         'id': classe.id,
-        'nom': classe.nom,
+        'mention': classe.mention,
+        'parcours': classe.parcours,
         'niveau': classe.niveau
     }), 200
 
@@ -67,8 +71,8 @@ def update_classe(current_user, classe_id, data):
     
     classe = Classe.query.get_or_404(classe_id)
     
-    if 'nom' in data:
-        classe.nom = data['nom']
+    if 'mention' in data:
+        classe.mention = data['mention']
     if 'niveau' in data:
         classe.niveau = data['niveau']
     
@@ -78,7 +82,8 @@ def update_classe(current_user, classe_id, data):
             'message': 'Classe mise à jour avec succès',
             'classe': {
                 'id': classe.id,
-                'nom': classe.nom,
+                'mention': classe.mention,
+                'parcours':classe.parcours,
                 'niveau': classe.niveau
             }
         }), 200

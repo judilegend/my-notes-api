@@ -4,7 +4,8 @@ class Classe(db.Model):
     __tablename__ = 'classe'
 
     id = db.Column(db.Integer, primary_key=True)
-    nom = db.Column(db.String(100), nullable=False)
+    mention = db.Column(db.String(40), nullable=False)
+    parcours = db.Column(db.String(200), nullable=False)
     niveau = db.Column(db.String(50), nullable=False)
 
     # Relations
