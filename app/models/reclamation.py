@@ -8,8 +8,10 @@ class StatutReclamation(enum.Enum):
     REJETEE_ENSEIGNANT = 'rejetee_enseignant'
     VALIDEE_ADMIN = 'validee_admin'
     REJETEE_ADMIN = 'rejetee_admin'
-
+    
 class Reclamation(db.Model):
+    __tablename__ = 'reclamation'
+
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.Text, nullable=False)
     date_creation = db.Column(db.DateTime, default=datetime.datetime.utcnow)

@@ -11,6 +11,8 @@ class SemestreType(enum.Enum):
     S7: 'Semestre 7'
 
 class Semestre(db.Model):
+    __tablename__ = 'semestre'
+
     id = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.Enum(SemestreType), nullable=False)
     annee_academique = db.Column(db.String(20), nullable=False)  # Ex: 2023-2024
