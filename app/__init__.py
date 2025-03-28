@@ -34,7 +34,20 @@ def create_app():
         db.create_all()
 
     # Importer les Blueprints
+ # Importer les Blueprint
     from app.routes.user_routes import user_routes
+    from app.routes.classe_routes import classe_routes
+    from app.routes.semestre_routes import semestre_routes
+    from app.routes.module_routes import module_routes
+    from app.routes.note_routes import note_routes
+    from app.routes.reclamation_routes import reclamation_routes
+
+  # Enregistrer les Blueprint
     app.register_blueprint(user_routes, url_prefix='/api/users')
+    app.register_blueprint(classe_routes, url_prefix='/api/classes')
+    app.register_blueprint(semestre_routes, url_prefix='/api/semestres')
+    app.register_blueprint(module_routes, url_prefix='/api/modules')
+    app.register_blueprint(note_routes, url_prefix='/api/notes')
+    app.register_blueprint(reclamation_routes, url_prefix='/api/reclamations')
 
     return app
