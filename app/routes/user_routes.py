@@ -1,6 +1,6 @@
 from flask import Blueprint,request
 
-from app.controllers.user_controller import register_user,login_user
+from app.controllers.user_controller import register_user,login_user,get_user_profile
 
 #creation de Blueprint
 user_routes = Blueprint('user_routes', __name__)
@@ -13,7 +13,6 @@ def register():
     return register_user(data)
 
 #route pour se connecter 
-
 @user_routes.route('/login', methods=['POST'])
 def login():
     data = request.get_json()

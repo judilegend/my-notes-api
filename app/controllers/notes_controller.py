@@ -1,5 +1,5 @@
 from app import db
-from app.models.note import Note
+from app.models.notes import Note
 from app.models.module import Module
 from app.models.user import User, UserRole
 from app.controllers.user_controller import token_required

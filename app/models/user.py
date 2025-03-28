@@ -1,6 +1,5 @@
 import enum
 from app import db
-from sqlalchemy.orm import relationship
 
 class UserRole(enum.Enum):
     ADMIN = 'admin'
@@ -19,9 +18,8 @@ class User(db.Model):
     role = db.Column(db.Enum(UserRole), nullable=False)
 
     # Relations
-    classe_id = db.Column(db.Integer, db.ForeignKey('classe.id'), nullable=True)
-    classe = relationship("Classe", backref="etudiants")
-
+    classe_id = db.Column(db.Integer, db.ForeignKey('classe.id'), nullable=True)  # Pas besoin de redefinir `classe`
+    
     modules_enseignes = db.relationship('Module', backref='enseignant', lazy=True)
     notes = db.relationship('Note', backref='etudiant', lazy=True)
     reclamations = db.relationship('Reclamation', backref='etudiant', lazy=True)

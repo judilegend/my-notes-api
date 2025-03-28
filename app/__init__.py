@@ -39,7 +39,7 @@ def create_app():
     from app.routes.classe_routes import classe_routes
     from app.routes.semestre_routes import semestre_routes
     from app.routes.module_routes import module_routes
-    from app.routes.note_routes import note_routes
+    from app.routes.notes_routes import notes_routes
     from app.routes.reclamation_routes import reclamation_routes
 
   # Enregistrer les Blueprint
@@ -47,7 +47,7 @@ def create_app():
     app.register_blueprint(classe_routes, url_prefix='/api/classes')
     app.register_blueprint(semestre_routes, url_prefix='/api/semestres')
     app.register_blueprint(module_routes, url_prefix='/api/modules')
-    app.register_blueprint(note_routes, url_prefix='/api/notes')
+    app.register_blueprint(notes_routes, url_prefix='/api/notes')
     app.register_blueprint(reclamation_routes, url_prefix='/api/reclamations')
 
     return app

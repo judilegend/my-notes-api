@@ -8,7 +8,7 @@ class Classe(db.Model):
     niveau = db.Column(db.String(50), nullable=False)
 
     # Relations
-    etudiants = db.relationship('User', backref='classe', lazy=True)
+    etudiants = db.relationship('User', backref='classe', lazy=True)  # Corrigé ici
     modules = db.relationship('Module', secondary='classe_module', backref='classes', lazy=True)
 
     def __repr__(self):
